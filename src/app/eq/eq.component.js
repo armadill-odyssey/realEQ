@@ -54,6 +54,13 @@ class EQComponent implements OnInit {
                 tooltips: {
                     enabled: false,
                 },
+                legend: {
+                    display: false,
+                },
+                title: {
+                    display:true,
+                    text: 'Parametric Equalizer',
+                },
                 scales: {
                     xAxes: [{
                         type: 'logarithmic',
@@ -73,6 +80,10 @@ class EQComponent implements OnInit {
                                 }
                             }
                         },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Frequency (Hz)',
+                        }
                     }],
                     yAxes: [{
                         ticks: {
@@ -80,6 +91,10 @@ class EQComponent implements OnInit {
                             min: -18,
                             max: 18,
                             fixedStepSize: 3,
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Amplitude (dB)',
                         }
                     }]
                 }

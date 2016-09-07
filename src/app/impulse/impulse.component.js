@@ -22,11 +22,13 @@ class ImpulseComponent implements OnInit {
     render() {
         const ctx = document.getElementById('impulse').querySelector('canvas');
 
-        let impulse = dsp.fir(10, .2);
+        let impulse = dsp.fir(20, .2);
         console.log(impulse);
-        let k = 0;
+        let k = -1;
         let labels = Array.apply(null, Array(impulse.length)).map(() => {
-            return k++;
+            k++;
+            if (k % 5 === 0) return k;
+            else return '';
         });
 
         let impulseChart = new Chart(ctx, {
@@ -44,6 +46,13 @@ class ImpulseComponent implements OnInit {
                 tooltips: {
                     enabled: false,
                 },
+                legend: {
+                    display: false,
+                },
+                title: {
+                    display:true,
+                    text: 'Impulse Response',
+                },
                 scales: {
                     xAxes: [{
                         categoryPercentage:.5,
@@ -51,10 +60,20 @@ class ImpulseComponent implements OnInit {
                         //type: 'linear',
                         //position: 'bottom',
                         ticks: {
-                            //fixedStepSize: 2,
+                            fixedStepSize: 2,
                             //min:0,
                             //max:10,
                         },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'N Samples',
+                        }
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Amplitude',
+                        }
                     }],
                 },
             }
