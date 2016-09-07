@@ -14,3 +14,4 @@ import 'rxjs';
 
 // Other vendors
 import 'normalize.css';
+import 'chart.js'

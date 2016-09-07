@@ -4,13 +4,12 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent }  from './app.component';
-import { SocialBlocksComponent }  from './socials';
-import { SocialService } from './socials/social.service';
+import { EQComponent }  from './eq';
+import { ImpulseComponent }  from './impulse';
 
 @NgModule({
     imports: [ BrowserModule ],
-    providers: [ SocialService ],
-    declarations: [ AppComponent, SocialBlocksComponent ],
+    declarations: [ AppComponent, EQComponent, ImpulseComponent ],
     bootstrap:    [ AppComponent ]
 })
 class AppModule {

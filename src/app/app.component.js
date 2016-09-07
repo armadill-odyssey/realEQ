@@ -2,13 +2,12 @@
 
 import { Component } from '@angular/core';
 
-import { SocialBlocksComponent } from './socials';
-import { SocialService } from './socials/social.service';
+import { EQComponent } from './eq';
+import { ImpulseComponent } from './impulse';
 
 @Component({
-    selector: 'coreyseryIOapp',
+    selector: 'real',
     templateUrl: './app.component.html',
-    providers: [SocialService],
     styles: ['', require('./app.component.less')],
 })
 class AppComponent implements OnInit {
