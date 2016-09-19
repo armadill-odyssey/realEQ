@@ -1,84 +1,107 @@
 'use strict';
 
-import { Component, OnInit } from '@angular/core';
-import { Chart } from 'chart.js';
-import * as math  from 'mathjs';
+import {
+	Component,
+	OnInit
+} from '@angular/core';
+import {
+	Chart
+} from 'chart.js';
+import * as math from 'mathjs';
 import * as dsp from '../shared/dsp';
 
 @Component({
-    selector: 'impulse',
-    template: `<div id="impulse"><canvas></canvas></div>`,
+	selector: 'impulse',
+	template: `<div id="impulse"><canvas></canvas>
+    <div class="settings">
+    <select [(ngModel)]="chart.type" (ngModelChange)="render($event)">
+      <option value="bar">Stem</option>
+      <option value="line">Smooth</option>
+    </select>
+    </div></div>`,
 })
 class ImpulseComponent implements OnInit {
-    constructor() {
+	constructor() {
+    // chart defaults
+    this.chart = {
+      type: 'line',
+      signal: null
     }
 
+  }
 
-    ngOnInit() {
 
-        this.render();
-    }
+	ngOnInit() {
 
-    render() {
-        const ctx = document.getElementById('impulse').querySelector('canvas');
+		this.render();
+	}
 
-        let impulse = dsp.fir(20, .2);
-        console.log(impulse);
-        let k = -1;
-        let labels = Array.apply(null, Array(impulse.length)).map(() => {
-            k++;
-            if (k % 5 === 0) return k;
-            else return '';
-        });
+	render() {
+		const ctx = document.getElementById('impulse').querySelector('canvas');
 
-        let impulseChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: impulse,
-                    backgroundColor: '#29B6F6',
-                    borderColor: '#29B6F6',
-                    borderWidth: 2,
-                }],
-            },
-            options: {
-                tooltips: {
-                    enabled: false,
-                },
-                legend: {
-                    display: false,
-                },
-                title: {
-                    display:true,
-                    text: 'Impulse Response',
-                },
-                scales: {
-                    xAxes: [{
-                        categoryPercentage:.5,
-                        barPercentage: .2,
-                        //type: 'linear',
-                        //position: 'bottom',
-                        ticks: {
-                            fixedStepSize: 2,
-                            //min:0,
-                            //max:10,
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'N Samples',
-                        }
-                    }],
-                    yAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Amplitude',
-                        }
-                    }],
-                },
-            }
-        });
-    }
+		let impulse = dsp.generateSignal(dsp.kroneckerDelta, 32);
+
+		let b = dsp.dft(impulse);
+		let c = dsp.idft(b, 32);
+		let frequencies = Object.keys(c);
+
+		let complexFreqs = frequencies.map(key => c[key]);
+		let freqAmplitudes = dsp.toReal(complexFreqs);
+
+		let freqLabels = frequencies.map(f => {
+      if (f % 10 === 0) return f;
+      else return '';
+    })
+
+
+		let impulseChart = new Chart(ctx, {
+			type: this.chart.type,
+			data: {
+				labels: freqLabels,
+				datasets: [{
+					data: freqAmplitudes,
+					backgroundColor: 'rgba(220,220,220, .5)',
+          pointRadius: 0,
+					borderColor: '#29B6F6',
+					borderWidth: 2,
+				}],
+			},
+			options: {
+				tooltips: {
+					enabled: false,
+				},
+				legend: {
+					display: false,
+				},
+				title: {
+					display: true,
+					text: 'Impulse Response',
+				},
+				scales: {
+					xAxes: [{
+						categoryPercentage: .5,
+						barPercentage: .2,
+						// type: 'linear',
+						position: 'bottom',
+						scaleLabel: {
+							display: true,
+							labelString: 'N Samples',
+						}
+					}],
+					yAxes: [{
+						type: 'linear',
+						scaleLabel: {
+							display: true,
+							labelString: 'Amplitude',
+						}
+					}],
+				},
+			}
+		});
+		window.impulseChart = impulseChart
+	}
 }
 
-export { ImpulseComponent };
+export {
+	ImpulseComponent
+};

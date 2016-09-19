@@ -24,29 +24,32 @@ class EQComponent implements OnInit {
 
         let labels = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 
+        let impulse = dsp.generateSignal(dsp.kroneckerDelta, 32);
+
+        let signal = dsp.dft(impulse);
+
+        let frequencies = Object.keys(signal);
+
+        let complexFreqs = frequencies.map(key => signal[key]);
+        let freqAmplitudes = dsp.toReal(complexFreqs);
+        let freqData = [];
+        let dbAmps = dsp.ampToDbfs(freqAmplitudes);
+
+        for (var i=0; i < frequencies.length; i++) {
+            freqData[i] = {
+                x: frequencies[i],
+                y: dbAmps[i]
+            };
+        }
+
         let realEqChart = new Chart(ctx, {
             type: 'line',
             data: {
                 datasets: [{
-                    data: [{
-                        x: 10,
-                        y: -18
-                    }, {
-                        x: 100,
-                        y: -3
-                    }, {
-                        x: 1000,
-                        y: 0
-                    }, {
-                        x: 10000,
-                        y: 0
-                    }, {
-                        x: 20000,
-                        y: 0
-                    }],
+                    data: freqData,
                     borderColor: 'rgba(255,99,132,1)',
                     borderWidth: 2,
-                    pointRadius: [0, 0, 0, 0, 0],
+                    pointRadius: 0,
                     lineTension: 0.5,
                 }]
             },
@@ -88,9 +91,9 @@ class EQComponent implements OnInit {
                     yAxes: [{
                         ticks: {
                             beginAtZero: false,
-                            min: -18,
+                            min: -24,
                             max: 18,
-                            fixedStepSize: 3,
+                            fixedStepSize: 6,
                         },
                         scaleLabel: {
                             display: true,
