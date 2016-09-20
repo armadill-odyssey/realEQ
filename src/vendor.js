@@ -15,4 +15,6 @@ import 'rxjs';
 
 // Other vendors
 import 'normalize.css';
-import 'chart.js'
+import 'chart.js';
+import 'foundation-sites/dist/foundation.min.js';
+import 'foundation-sites/dist/foundation.min.css';

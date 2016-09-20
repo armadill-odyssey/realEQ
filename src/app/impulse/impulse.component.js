@@ -13,11 +13,13 @@ import * as dsp from '../shared/dsp';
 @Component({
 	selector: 'impulse',
 	template: `<div id="impulse"><canvas></canvas>
-    <div class="settings">
-    <select [(ngModel)]="chart.type" (ngModelChange)="render($event)">
-      <option value="bar">Stem</option>
-      <option value="line">Smooth</option>
-    </select>
+    <div class="settings float-right">
+    <label>Display
+      <select [(ngModel)]="chart.type" (ngModelChange)="render($event)">
+        <option value="bar">Stem</option>
+        <option value="line">Smooth</option>
+      </select>
+    </label>
     </div></div>`,
 })
 class ImpulseComponent implements OnInit {
