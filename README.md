@@ -5,12 +5,16 @@
 
 
 ## Definitions
-  Mostly just hera so I can remember what the hell everything is.
-  
+  Mostly just here so I can remember what the hell everything is.
+
 #### Impulse Response
   Response to a short duration time signal
-  
+
 #### Fourier Transform
   Transforms functions to be characterized by sines and cosines.
   Transforms from time domain to the frequency domain.
   i.e. f(time) to F(freq)
+
+#### Inverse Fourier Transform
+  Just the opposite of the Fourier transform.
+  i.e. F(freq) to f(time) 

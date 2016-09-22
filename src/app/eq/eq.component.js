@@ -3,7 +3,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Chart } from 'chart.js';
 import * as math  from 'mathjs';
-import * as dsp from '../shared/dsp';
+import * as dsp from '../dsp';
 
 @Component({
     selector: 'eq',
@@ -24,16 +24,16 @@ class EQComponent implements OnInit {
 
         let labels = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000];
 
-        let impulse = dsp.generateSignal(dsp.kroneckerDelta, 32);
-
-        let signal = dsp.dft(impulse);
+        let impulse = dsp.util.generateSignal(dsp.fn.kroneckerDelta, 32);
+        console.log(dsp);
+        let signal = dsp.transforms.dft(impulse);
 
         let frequencies = Object.keys(signal);
 
         let complexFreqs = frequencies.map(key => signal[key]);
-        let freqAmplitudes = dsp.toReal(complexFreqs);
+        let freqAmplitudes = dsp.util.toReal(complexFreqs);
         let freqData = [];
-        let dbAmps = dsp.ampToDbfs(freqAmplitudes);
+        let dbAmps = dsp.util.ampToDbfs(freqAmplitudes);
 
         for (var i=0; i < frequencies.length; i++) {
             freqData[i] = {
